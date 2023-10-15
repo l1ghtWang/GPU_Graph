@@ -1,2 +1,0 @@
-~/HyTGraph/build/hybrid_pr -graphfile /home/share/graph_data/raw/uk_2007/uk_2007.el -format market_big -weight_num 1 > result_firstRound_Uk_DD.txt
-~/HyTGraph/build/hybrid_pr_withTD -graphfile /home/share/graph_data/raw/uk_2007/uk_2007.el -format market_big -weight_num 1 > result_firstRound_Uk_TD.txt
