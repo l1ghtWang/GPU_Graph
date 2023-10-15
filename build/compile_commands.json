@@ -1,0 +1,202 @@
+[
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr.dir/samples/hybrid_pr/hybrid_pr_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr/hybrid_pr_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr/hybrid_pr_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr.dir/samples/hybrid_pr/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_withTD.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_withTD.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_withTD.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_withTD.dir/samples/hybrid_pr_withTD/hybrid_pr_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr_withTD/hybrid_pr_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr_withTD/hybrid_pr_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_withTD.dir/samples/hybrid_pr_withTD/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr_withTD/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr_withTD/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_newImplementation.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_newImplementation.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_newImplementation.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_newImplementation.dir/samples/hybrid_pr_newImplementation/hybrid_pr_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr_newImplementation/hybrid_pr_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr_newImplementation/hybrid_pr_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_pr_newImplementation.dir/samples/hybrid_pr_newImplementation/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_pr_newImplementation/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_pr_newImplementation/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_bfs.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_bfs.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_bfs.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_bfs.dir/samples/hybrid_bfs/hybrid_bfs_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_bfs/hybrid_bfs_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_bfs/hybrid_bfs_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_bfs.dir/samples/hybrid_bfs/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_bfs/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_bfs/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp.dir/samples/hybrid_sssp/hybrid_sssp_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_sssp/hybrid_sssp_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_sssp/hybrid_sssp_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp.dir/samples/hybrid_sssp/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_sssp/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_sssp/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp_plotFig6.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp_plotFig6.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp_plotFig6.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp_plotFig6.dir/samples/hybrid_sssp_plotFig6/hybrid_sssp_host.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_sssp_plotFig6/hybrid_sssp_host.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_sssp_plotFig6/hybrid_sssp_host.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_sssp_plotFig6.dir/samples/hybrid_sssp_plotFig6/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_sssp_plotFig6/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_sssp_plotFig6/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/gtools.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/gtools.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/gtools.dir/samples/tools/gtools.cpp.o -c /home/yugwang/HyTGraph/samples/tools/gtools.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/tools/gtools.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_cc.dir/src/utils/parser.cpp.o -c /home/yugwang/HyTGraph/src/utils/parser.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/parser.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_cc.dir/src/utils/utils.cpp.o -c /home/yugwang/HyTGraph/src/utils/utils.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/utils.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_cc.dir/src/utils/to_json.cpp.o -c /home/yugwang/HyTGraph/src/utils/to_json.cpp",
+  "file": "/home/yugwang/HyTGraph/src/utils/to_json.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/cub -I/home/yugwang/HyTGraph/deps/json -I/home/yugwang/HyTGraph -I/home/yugwang/HyTGraph/include -I/usr/local/cuda/include  -std=c++11 -O3 -DNDEBUG -O3 -DNDEBUG   -w -o CMakeFiles/hybrid_cc.dir/samples/hybrid_cc/main.cpp.o -c /home/yugwang/HyTGraph/samples/hybrid_cc/main.cpp",
+  "file": "/home/yugwang/HyTGraph/samples/hybrid_cc/main.cpp"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build/deps/gflags",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DNO_THREADS -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/gflags/src -I/home/yugwang/HyTGraph/build/deps/gflags/include/gflags -O3 -DNDEBUG   -w -o CMakeFiles/gflags_nothreads_static.dir/src/gflags.cc.o -c /home/yugwang/HyTGraph/deps/gflags/src/gflags.cc",
+  "file": "/home/yugwang/HyTGraph/deps/gflags/src/gflags.cc"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build/deps/gflags",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DNO_THREADS -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/gflags/src -I/home/yugwang/HyTGraph/build/deps/gflags/include/gflags -O3 -DNDEBUG   -w -o CMakeFiles/gflags_nothreads_static.dir/src/gflags_reporting.cc.o -c /home/yugwang/HyTGraph/deps/gflags/src/gflags_reporting.cc",
+  "file": "/home/yugwang/HyTGraph/deps/gflags/src/gflags_reporting.cc"
+},
+{
+  "directory": "/home/yugwang/HyTGraph/build/deps/gflags",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/g++ -DGFLAGS_IS_A_DLL=0 -DNO_THREADS -I/home/yugwang/HyTGraph/build/deps/gflags/include -I/home/yugwang/HyTGraph/deps/gflags/src -I/home/yugwang/HyTGraph/build/deps/gflags/include/gflags -O3 -DNDEBUG   -w -o CMakeFiles/gflags_nothreads_static.dir/src/gflags_completions.cc.o -c /home/yugwang/HyTGraph/deps/gflags/src/gflags_completions.cc",
+  "file": "/home/yugwang/HyTGraph/deps/gflags/src/gflags_completions.cc"
+}
+]

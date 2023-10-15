@@ -1059,51 +1059,51 @@ namespace sepgraph {
             }
         }*/
 
-        template<LoadBalancing LB,
-                typename TAppInst,
-                typename WorkSource,
-                typename CSRGraph,
-                template<typename> class GraphDatum,
-                typename TValue,
-                typename TBuffer,
-                typename TWeight>
-        __global__
-        void SyncPushTDB(TAppInst app_inst,
-                         index_t seg_snode,
-			             index_t seg_enode,
-			             uint64_t seg_sedge_csr,
-			             bool zcflag,
-                         WorkSource work_source,
-                         CSRGraph csr_graph,
-                         GraphDatum<TValue> node_value_datum,
-                         GraphDatum<TBuffer> node_buffer_datum,
-                         GraphDatum<TWeight> edge_weight_datum,
-                         BitmapDeviceObject out_active,
-                         BitmapDeviceObject in_active) {
-                            uint32_t tid = TID_1D;
-                            //if(tid==0)printf("SyncPushTDB\n"); 
-            if (false) {
-                sync_push_td::RelaxDB<false>(app_inst,seg_snode,seg_enode,seg_sedge_csr,zcflag,
-                                            work_source,
-                                            csr_graph,
-                                            node_value_datum,
-                                            node_buffer_datum,
-                                            edge_weight_datum,
-                                            (TBuffer) 0,
-                                            out_active,
-                                            in_active);
-            } else {
-                sync_push_td::RelaxCTADB<LB, false>(app_inst,seg_snode,seg_enode,seg_sedge_csr,zcflag,
-                                                   work_source,
-                                                   csr_graph,
-                                                   node_value_datum,
-                                                   node_buffer_datum,
-                                                   edge_weight_datum,
-                                                   (TBuffer) 0,
-                                                   out_active,
-                                                   in_active);
-            }
-        }
+        // template<LoadBalancing LB,
+        //         typename TAppInst,
+        //         typename WorkSource,
+        //         typename CSRGraph,
+        //         template<typename> class GraphDatum,
+        //         typename TValue,
+        //         typename TBuffer,
+        //         typename TWeight>
+        // __global__
+        // void SyncPushTDB(TAppInst app_inst,
+        //                  index_t seg_snode,
+		// 	             index_t seg_enode,
+		// 	             uint64_t seg_sedge_csr,
+		// 	             bool zcflag,
+        //                  WorkSource work_source,
+        //                  CSRGraph csr_graph,
+        //                  GraphDatum<TValue> node_value_datum,
+        //                  GraphDatum<TBuffer> node_buffer_datum,
+        //                  GraphDatum<TWeight> edge_weight_datum,
+        //                  BitmapDeviceObject out_active,
+        //                  BitmapDeviceObject in_active) {
+        //                     uint32_t tid = TID_1D;
+        //                     //if(tid==0)printf("SyncPushTDB\n"); 
+        //     if (false) {
+        //         sync_push_td::RelaxDB<false>(app_inst,seg_snode,seg_enode,seg_sedge_csr,zcflag,
+        //                                     work_source,
+        //                                     csr_graph,
+        //                                     node_value_datum,
+        //                                     node_buffer_datum,
+        //                                     edge_weight_datum,
+        //                                     (TBuffer) 0,
+        //                                     out_active,
+        //                                     in_active);
+        //     } else {
+        //         sync_push_td::RelaxCTADB<LB, false>(app_inst,seg_snode,seg_enode,seg_sedge_csr,zcflag,
+        //                                            work_source,
+        //                                            csr_graph,
+        //                                            node_value_datum,
+        //                                            node_buffer_datum,
+        //                                            edge_weight_datum,
+        //                                            (TBuffer) 0,
+        //                                            out_active,
+        //                                            in_active);
+        //     }
+        // }
         
          template<LoadBalancing LB,
                 typename TAppInst,
@@ -1136,6 +1136,38 @@ namespace sepgraph {
                                                    out_active,
                                                    in_active);
             
+        }
+
+        template <LoadBalancing LB,
+                  typename TAppInst,
+                  typename WorkSource,
+                  typename CSRGraph,
+                  template <typename> class GraphDatum,
+                  typename TValue,
+                  typename TBuffer,
+                  typename TWeight>
+        __global__ void SyncPushTDB(TAppInst app_inst,
+                                    index_t seg_snode,
+                                    index_t seg_enode,
+                                    uint64_t seg_sedge_csr,
+                                    bool zcflag,
+                                    WorkSource work_source,
+                                    const CSRGraph csr_graph,
+                                    GraphDatum<TValue> node_value_datum,
+                                    GraphDatum<TBuffer> node_buffer_datum,
+                                    GraphDatum<TWeight> edge_weight_datum,
+                                    BitmapDeviceObject out_active,
+                                    BitmapDeviceObject in_active)
+        {
+            sync_push_td::RelaxCTADB<LB, false>(app_inst, seg_snode, seg_enode, seg_sedge_csr, zcflag,
+                                                work_source,
+                                                csr_graph,
+                                                node_value_datum,
+                                                node_buffer_datum,
+                                                edge_weight_datum,
+                                                (TBuffer)0,
+                                                out_active,
+                                                in_active);
         }
 
                  template<LoadBalancing LB,
@@ -1200,9 +1232,44 @@ namespace sepgraph {
 					   in_active
 					    );
             
-        }  
+        }
 
 
+
+        template <typename TAppInst,
+                  typename WorkSource,
+                  typename CSRGraph,
+                  template <typename> class GraphDatum,
+                  typename TValue,
+                  typename TBuffer,
+                  typename TWeight>
+        __global__ void pr_td_kernel(TAppInst app_inst,
+                                     index_t seg_snode,
+                                     index_t seg_enode,
+                                     uint64_t seg_sedge_csr,
+                                     bool zcflag,
+                                     WorkSource work_source,
+                                     const CSRGraph csr_graph,
+                                     GraphDatum<TValue> node_value_datum,
+                                     GraphDatum<TBuffer> node_buffer_datum,
+                                     GraphDatum<TWeight> edge_weight_datum,
+                                     BitmapDeviceObject out_active,
+                                     BitmapDeviceObject in_active)
+        {
+            uint32_t tid = TID_1D;
+            index_t work_size = seg_enode - seg_snode;
+            if (tid < work_size)
+            {
+                index_t nodeID = seg_snode + tid;
+                uint64_t outDegree = csr_graph.end_edge(nodeID) - csr_graph.begin_edge(nodeID);
+                TBuffer buffer = atomicExch(node_buffer_datum.get_item_ptr(nodeID), 0.0);
+                if(buffer > 0.01)
+                {
+                    
+                }
+            }
+        }
+        
     }
 }
 #endif //HYBRID_DRIVER_H

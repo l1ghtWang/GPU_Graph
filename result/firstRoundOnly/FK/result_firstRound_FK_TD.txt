@@ -1,0 +1,64 @@
+
+Testing single GPU Page Rank
+--------------------
+
+/home/yugwang/HyTGraph/samples/hybrid_pr_withTD/hybrid_pr.cu:123 HOST: HybridPageRank
+
+Loading graph /home/share/graph_data/raw/friendster_konect/friendster.el (market_big)
+
+----- Running Hybrid Graph Engine -----
+
+The graph has 68349467 vertices, and 2586147869 edges (average degree: 37.837135,max. degree: 5214)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:132 HOST: Converting CSR to CSC...
+/home/yugwang/HyTGraph/include/framework/framework.cuh:198 HOST: Load graph time: 3956.689000 ms (excluded)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:260 HOST: InitGraph: 51138.605000 ms (excluded)
+FLAGS_SEGMENT:20
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(19)	|engine(Exp)	|range(44286747,68349467)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(18)	|engine(Exp)	|range(36695158,44286747)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(17)	|engine(Exp)	|range(32381899,36695158)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(16)	|engine(Exp)	|range(29235296,32381899)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(15)	|engine(Exp)	|range(26390864,29235296)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(14)	|engine(Exp)	|range(24017496,26390864)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(0)	|engine(Exp)	|range(0,2110418)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(13)	|engine(Exp)	|range(22040587,24017496)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(10)	|engine(Exp)	|range(16472131,18365752)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(1)	|engine(Exp)	|range(2110418,4002637)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(9)	|engine(Exp)	|range(14618376,16472131)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(11)	|engine(Exp)	|range(18365752,20203846)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(12)	|engine(Exp)	|range(20203846,22040587)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(8)	|engine(Exp)	|range(12949581,14618376)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(7)	|engine(Exp)	|range(11346485,12949581)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(6)	|engine(Exp)	|range(9846516,11346485)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(2)	|engine(Exp)	|range(4002637,5500962)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(3)	|engine(Exp)	|range(5500962,6963037)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(5)	|engine(Exp)	|range(8390588,9846516)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:874 HOST: PUSH TD RUN in round(1)	|batch(4)	|engine(Exp)	|range(6963037,8390588)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:318 HOST: --------------Overhead--------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:319 HOST: Rebuild worklist: 4.772000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:320 HOST: Priority sample: 5.282000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:321 HOST: hybrid Worlist: 1.579000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:322 HOST: Unique Worklist: 12.069000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:323 HOST: --------------Time statistics---------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:324 HOST: Kernel time: 1115.488037
+/home/yugwang/HyTGraph/include/framework/framework.cuh:325 HOST: Total time: 1123.678955
+/home/yugwang/HyTGraph/include/framework/framework.cuh:326 HOST: Total rounds: 1
+/home/yugwang/HyTGraph/include/framework/framework.cuh:327 HOST: Time/round: 1123.678955
+/home/yugwang/HyTGraph/include/framework/framework.cuh:328 HOST: filter_num: 20
+/home/yugwang/HyTGraph/include/framework/framework.cuh:329 HOST: zerocopy_num: 0
+/home/yugwang/HyTGraph/include/framework/framework.cuh:330 HOST: compaction_num: 0
+/home/yugwang/HyTGraph/include/framework/framework.cuh:333 HOST: --------------Engine info-------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:340 HOST: Force Push Load balancing: FINE_GRAINED
+/home/yugwang/HyTGraph/include/framework/framework.cuh:345 HOST: Force Pull Load balancing: FINE_GRAINED
+/home/yugwang/HyTGraph/include/framework/framework.cuh:349 HOST: Priority type: NONE
+/home/yugwang/HyTGraph/include/framework/framework.cuh:358 HOST: Fused kernel: NO
+/home/yugwang/HyTGraph/include/framework/framework.cuh:359 HOST: Max iteration reached: NO
+/home/yugwang/HyTGraph/include/framework/framework.cuh:362 HOST: -------------Misc-------------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:364 HOST: Device: GeForce RTX 3090
+/home/yugwang/HyTGraph/include/framework/framework.cuh:365 HOST: Dataset: /home/share/graph_data/raw/friendster_konect/friendster.el
+/home/yugwang/HyTGraph/include/framework/framework.cuh:367 HOST: Algo type: ITERATIVE_SCHEME
+Warning: Result not checked
+
+Context status:
+	Endpoint map (virtual endpoint, physical device):  (-1, -1) (0, 0)
+	Event pools (device, events):  (0, 0)
+Overall: Test passed

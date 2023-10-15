@@ -373,6 +373,7 @@ namespace sepgraph {
                 graph_datum.priority_detal = priority_detal;
 
                 AlgoVariant next_policy[FLAGS_SEGMENT];
+                printf("FLAGS_SEGMENT:%d\n",FLAGS_SEGMENT);///
                 for(index_t i = 0; i < FLAGS_SEGMENT; i++){
                     next_policy[i] = m_policy_decision_maker.GetInitPolicy();
                 }
@@ -401,13 +402,115 @@ namespace sepgraph {
                         convergence = true;
                         LOG("Max iterations reached\n");
                   }
-                    
+                  break; ////debug
                 }
 
                 sw_total.stop();
 
                 m_running_info.time_total = sw_total.ms();
 
+            }
+
+            void Start_newImplementation(index_t priority_detal = 0)
+            {
+
+                GraphDatum &graph_datum = *m_graph_datum;
+                graph_datum.priority_detal = priority_detal;
+
+                AlgoVariant next_policy[FLAGS_SEGMENT];
+                printf("FLAGS_SEGMENT:%d\n", FLAGS_SEGMENT); ///
+                for (index_t i = 0; i < FLAGS_SEGMENT; i++)
+                {
+                    next_policy[i] = m_policy_decision_maker.GetInitPolicy();
+                }
+                bool convergence = false;
+                Stopwatch sw_total(true);
+                LoadOptions();
+
+                while (!convergence)
+                {
+                    PreComputationBW();
+                    CombineTask(next_policy);
+                    ExecutePolicyBW_newImplementation(next_policy);
+                    for (index_t i = 0; i < FLAGS_SEGMENT; i++)
+                    {
+                        next_policy[i] = m_policy_decision_maker.GetNextPolicy(i, graph_datum.Compaction_num);
+                    }
+
+                    int convergence_check = 0;
+                    for (index_t seg_id = 0; seg_id < FLAGS_SEGMENT; seg_id++)
+                    {
+                        if (m_running_info.input_active_count_seg[seg_id] == 0)
+                        {
+                            convergence_check++;
+                        }
+                    }
+                    if (convergence_check == FLAGS_SEGMENT)
+                    {
+                        convergence = true;
+                    }
+                    if (m_running_info.current_round == 1000)
+                    { // FLAGS_max_iteration
+                        convergence = true;
+                        LOG("Max iterations reached\n");
+                    }
+                    break; ////debug
+                }
+
+                sw_total.stop();
+
+                m_running_info.time_total = sw_total.ms();
+            }
+
+            void Start_withTD(index_t priority_detal = 0)
+            {
+
+                GraphDatum &graph_datum = *m_graph_datum;
+                graph_datum.priority_detal = priority_detal;
+
+                AlgoVariant next_policy[FLAGS_SEGMENT];
+                printf("FLAGS_SEGMENT:%d\n", FLAGS_SEGMENT); ///
+                for (index_t i = 0; i < FLAGS_SEGMENT; i++)
+                {
+                    next_policy[i] = m_policy_decision_maker.GetInitPolicy();
+                }
+                bool convergence = false;
+                Stopwatch sw_total(true);
+                LoadOptions();
+
+                while (!convergence)
+                {
+                    PreComputationBW();
+                    CombineTask(next_policy);
+                    ExecutePolicyBW_withTD(next_policy);
+                    for (index_t i = 0; i < FLAGS_SEGMENT; i++)
+                    {
+                        next_policy[i] = m_policy_decision_maker.GetNextPolicy(i, graph_datum.Compaction_num);
+                    }
+
+                    int convergence_check = 0;
+                    for (index_t seg_id = 0; seg_id < FLAGS_SEGMENT; seg_id++)
+                    {
+                        if (m_running_info.input_active_count_seg[seg_id] == 0)
+                        {
+                            convergence_check++;
+                        }
+                    }
+                    if (convergence_check == FLAGS_SEGMENT)
+                    {
+                        convergence = true;
+                    }
+                    if (m_running_info.current_round == 1000)
+                    { // FLAGS_max_iteration
+                        convergence = true;
+                        LOG("Max iterations reached\n");
+                    }
+                    break;////debug
+                }
+
+                sw_total.stop();
+
+                m_running_info.time_total = sw_total.ms();
             }
 
             const groute::graphs::host::CSRGraph &CSRGraph() const {
@@ -495,7 +598,8 @@ namespace sepgraph {
                 stream.Sync();
             }
 
-            void ExecutePolicyBW(AlgoVariant *algo_variant) {
+            void ExecutePolicyBW(AlgoVariant *algo_variant) 
+            {
                 auto &app_inst = *m_app_inst;
                 auto &csr_graph_host = m_csr_dev_graph_allocator->HostObject();
                 GraphDatum &graph_datum = *m_graph_datum;
@@ -548,6 +652,7 @@ namespace sepgraph {
                     //printf("seg_idx_new:%d seg_snode:%d seg_enode:%d seg_sedge_csr:%lu seg_nedges_csr:%lu \n",seg_idx_new,seg_snode,seg_enode,seg_sedge_csr,seg_nedges_csr);
     		        stream_id = seg_idx_new % FLAGS_n_stream;
                     const auto &csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+                    bool compact_flag = false;//
                     if(algo_variant[seg_idx_new] == AlgoVariant::Exp_Filter){
                         //printf("exp\n");
                         m_running_info.explicit_num++;
@@ -581,6 +686,7 @@ namespace sepgraph {
                     }
                     else{
                         //printf("Compaction\n");
+                        compact_flag = true;///
                         m_running_info.compaction_num++;
                         Compaction();
                         m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Compaction(graph_datum.subgraphedges,stream[stream_id]);
@@ -599,7 +705,14 @@ namespace sepgraph {
                            m_engine_options,
                            stream[stream_id]); 
                     }
-		          //LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",m_running_info.current_round,seg_idx_new,zcflag?"ZC":"Exp",seg_snode,seg_enode);
+                    std::string policy = "";//
+                    if(compact_flag)
+                        policy = "Comp";
+                    else if(zcflag)
+                        policy = "ZC";
+                    else
+                        policy = "Exp";
+                    LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n", m_running_info.current_round, seg_idx_new, policy.c_str(), seg_snode, seg_enode); //
                }
 
                for(index_t stream_idx = 0; stream_idx < FLAGS_n_stream ; stream_idx++){
@@ -607,70 +720,495 @@ namespace sepgraph {
                }
                sw_round.stop();
                if(seg_exc >= FLAGS_n_stream && FLAGS_residence == 1){
-                
-               for(index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++){
-                    if(m_graph_datum->seg_exc_list[seg_idx] != -1){
+                        
+                    for(index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++){
+                            if(m_graph_datum->seg_exc_list[seg_idx] != -1){
+                                    index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
+                                    stream_id = seg_exc % FLAGS_n_stream;
+                                    uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx];
+                                    seg_snode = m_groute_context->seg_snode[seg_idx_exp];                                    // start node
+                                    seg_enode = m_groute_context->seg_enode[seg_idx_exp];  
+                                    RebuildArrayWorklist(app_inst,
+                                        graph_datum,
+                                        stream[stream_id],seg_snode,seg_enode - seg_snode,seg_idx_exp);
+
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+
+                        for(index_t stream_idx = 0; stream_idx < FLAGS_n_stream ; stream_idx++){
+                                    stream[stream_idx].Sync();
+                        }
+
+                        for(index_t seg_idx = 0; seg_idx < FLAGS_n_stream ; seg_idx++){
+                            if(m_graph_datum->seg_exc_list[seg_idx] != -1){
+                            index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
+                            seg_idx_new = seg_exc;
+                            uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
+                            stream_id = seg_exc % FLAGS_n_stream;
+                            seg_snode = m_groute_context->seg_snode[seg_idx_exp];                                    // start node
+                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];                                    // end node
+                            seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp];                            // start edge
+                            seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp]; 
+                                
+                            m_csr_dev_graph_allocator->SwitchExp(stream_id);
+                            if(m_graph_datum->m_weighted == true){ 
+                                m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
+                            }
+                            zcflag = false;
+                            auto csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+
+                            //LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",m_running_info.current_round,seg_idx_new,zcflag?"ZC":"Exp",seg_snode,seg_enode);
+                            RunSyncPushDDB(app_inst,seg_snode,seg_enode,seg_sedge_csr,seg_idx_exp,zcflag,
+                            csr_graph,
+                            graph_datum,
+                            m_engine_options,
+                            stream[stream_id]); 
+                            }
+                            else{
+                                continue;
+                            }            
+                        }
+                        for(index_t stream_idx = 0; stream_idx < FLAGS_n_stream ; stream_idx++){
+                            stream[stream_idx].Sync();
+                            m_graph_datum->seg_exc_list[stream_idx] = -1;
+                        }
+                    }
+          
+                    m_running_info.time_round = sw_round.ms();	
+                    PostComputationBW();
+                    sw_execution.stop();
+
+                    m_running_info.time_kernel += sw_execution.ms();
+            }
+
+            void ExecutePolicyBW_newImplementation(AlgoVariant *algo_variant)
+            {
+                auto &app_inst = *m_app_inst;
+                auto &csr_graph_host = m_csr_dev_graph_allocator->HostObject();
+                GraphDatum &graph_datum = *m_graph_datum;
+                Stopwatch sw_execution(true);
+                Stopwatch sw_round(true);
+                bool zcflag = true;
+                m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Zero();
+
+                uint64_t seg_sedge_csr, seg_nedges_csr;
+                index_t seg_snode, seg_enode;
+                std::pair<index_t, TValue> seg_res_idx;
+                std::vector<std::pair<index_t, TValue>> seg_res_rank;
+                index_t seg_idx_new;
+                Stopwatch sw_priority(true);
+                if (FLAGS_priority_a == 1)
+                {
+                    for (index_t seg_idx = 0; seg_idx < m_groute_context->segment_ct; seg_idx++)
+                    {
+                        seg_idx_new = m_groute_context->segment_id_ct[seg_idx];
+                        seg_res_idx.first = seg_idx;
+                        seg_res_idx.second = graph_datum.seg_res_num[seg_idx_new];
+                        seg_res_rank.push_back(seg_res_idx);
+                    }
+                    std::sort(seg_res_rank.begin(), seg_res_rank.end(), [](std::pair<index_t, TValue> v1, std::pair<index_t, TValue> v2)
+                              { return v1.second > v2.second; });
+                }
+
+                index_t priority_seg = m_groute_context->segment_ct;
+
+                index_t seg_exc = 0;
+                for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                {
+                    m_graph_datum->seg_exc_list[stream_idx] = -1;
+                }
+                sw_priority.stop();
+                m_running_info.time_overhead_sample += sw_priority.ms();
+
+                index_t stream_id;
+                for (index_t seg_idx = 0; seg_idx < priority_seg; seg_idx++)
+                {
+                    if (FLAGS_priority_a == 1)
+                    {
+                        seg_idx_new = seg_res_rank[seg_idx].first;
+                    }
+                    else
+                    {
+                        seg_idx_new = seg_idx;
+                    }
+                    uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
+                    seg_snode = m_groute_context->seg_snode[seg_idx_exp];         // start node
+                    seg_enode = m_groute_context->seg_enode[seg_idx_exp];         // end node
+                    seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp]; // start edge
+                    seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp];
+
+                    // printf("seg_idx_new:%d seg_snode:%d seg_enode:%d seg_sedge_csr:%lu seg_nedges_csr:%lu \n",seg_idx_new,seg_snode,seg_enode,seg_sedge_csr,seg_nedges_csr);
+                    stream_id = seg_idx_new % FLAGS_n_stream;
+                    const auto &csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+                    bool compact_flag = false; //
+                    if (algo_variant[seg_idx_new] == AlgoVariant::Exp_Filter)
+                    {
+                        // printf("exp\n");
+                        m_running_info.explicit_num++;
+                        seg_exc++;
+                        m_graph_datum->seg_exc_list[stream_id] = seg_idx_new;
+                        m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Explicit_Step(seg_nedges_csr, seg_sedge_csr, stream[stream_id], stream_id);
+                        m_csr_dev_graph_allocator->SwitchExp(stream_id);
+                        if (m_graph_datum->m_weighted == true)
+                        {
+                            m_graph_datum->m_csr_edge_weight_datum.AllocateDevMirror_edge_explicit_step(csr_graph_host, seg_nedges_csr, seg_sedge_csr, stream[stream_id], stream_id);
+                            m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
+                        }
+                        zcflag = false;
+                        Run_newImplementation(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_exp, zcflag,
+                                              csr_graph,
+                                              graph_datum,
+                                              m_engine_options,
+                                              stream[stream_id]);
+                    }
+                    else if (algo_variant[seg_idx_new] == AlgoVariant::Zero_Copy)
+                    {
+                        // printf("zero\n");
+                        m_running_info.zerocopy_num++;
+                        m_csr_dev_graph_allocator->SwitchZC();
+                        m_graph_datum->m_csr_edge_weight_datum.SwitchZC();
+                        zcflag = true;
+                        seg_idx_new = FLAGS_SEGMENT;
+                        RunSyncPushDDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_new, zcflag,
+                                       csr_graph,
+                                       graph_datum,
+                                       m_engine_options,
+                                       stream[stream_id]);
+                    }
+                    else
+                    {
+                        // printf("Compaction\n");
+                        compact_flag = true; ///
+                        m_running_info.compaction_num++;
+                        Compaction();
+                        m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Compaction(graph_datum.subgraphedges, stream[stream_id]);
+                        m_csr_dev_graph_allocator->SwitchCom();
+                        if (m_graph_datum->m_weighted == true)
+                        {
+                            m_graph_datum->m_csr_edge_weight_datum.AllocateDevMirror_edge_compaction(csr_graph_host, graph_datum.subgraphedges, stream[stream_id]);
+                            m_graph_datum->m_csr_edge_weight_datum.SwitchCom();
+                        }
+                        zcflag = false;
+                        seg_idx_new = FLAGS_SEGMENT + 1;
+                        RunSyncPushDDB_COM(app_inst,
+                                           graph_datum.subgraphnodes,
+                                           seg_idx_new,
+                                           csr_graph,
+                                           graph_datum,
+                                           m_engine_options,
+                                           stream[stream_id]);
+                    }
+                    std::string policy = ""; //
+                    if (compact_flag)
+                        policy = "Comp";
+                    else if (zcflag)
+                        policy = "ZC";
+                    else
+                        policy = "Exp";
+                    LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n", m_running_info.current_round, seg_idx_new, policy.c_str(), seg_snode, seg_enode); //
+                }
+
+                for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                {
+                    stream[stream_idx].Sync();
+                }
+                sw_round.stop();
+                if (seg_exc >= FLAGS_n_stream && FLAGS_residence == 1)
+                {
+
+                    for (index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++)
+                    {
+                        if (m_graph_datum->seg_exc_list[seg_idx] != -1)
+                        {
                             index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
                             stream_id = seg_exc % FLAGS_n_stream;
                             uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx];
-                            seg_snode = m_groute_context->seg_snode[seg_idx_exp];                                    // start node
-                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];  
+                            seg_snode = m_groute_context->seg_snode[seg_idx_exp]; // start node
+                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];
                             RebuildArrayWorklist(app_inst,
-                                graph_datum,
-                                stream[stream_id],seg_snode,seg_enode - seg_snode,seg_idx_exp);
-
+                                                 graph_datum,
+                                                 stream[stream_id], seg_snode, seg_enode - seg_snode, seg_idx_exp);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-                    else{
-                        continue;
+
+                    for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                    {
+                        stream[stream_idx].Sync();
+                    }
+
+                    for (index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++)
+                    {
+                        if (m_graph_datum->seg_exc_list[seg_idx] != -1)
+                        {
+                            index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
+                            seg_idx_new = seg_exc;
+                            uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
+                            stream_id = seg_exc % FLAGS_n_stream;
+                            seg_snode = m_groute_context->seg_snode[seg_idx_exp];         // start node
+                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];         // end node
+                            seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp]; // start edge
+                            seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp];
+
+                            m_csr_dev_graph_allocator->SwitchExp(stream_id);
+                            if (m_graph_datum->m_weighted == true)
+                            {
+                                m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
+                            }
+                            zcflag = false;
+                            auto csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+
+                            // LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",m_running_info.current_round,seg_idx_new,zcflag?"ZC":"Exp",seg_snode,seg_enode);
+                            RunSyncPushDDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_exp, zcflag,
+                                           csr_graph,
+                                           graph_datum,
+                                           m_engine_options,
+                                           stream[stream_id]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                    {
+                        stream[stream_idx].Sync();
+                        m_graph_datum->seg_exc_list[stream_idx] = -1;
                     }
                 }
 
-                for(index_t stream_idx = 0; stream_idx < FLAGS_n_stream ; stream_idx++){
-                            stream[stream_idx].Sync();
+                m_running_info.time_round = sw_round.ms();
+                PostComputationBW();
+                sw_execution.stop();
+
+                m_running_info.time_kernel += sw_execution.ms();
+            }
+
+            void ExecutePolicyBW_withTD(AlgoVariant *algo_variant)
+            {
+                auto &app_inst = *m_app_inst;
+                auto &csr_graph_host = m_csr_dev_graph_allocator->HostObject();
+                GraphDatum &graph_datum = *m_graph_datum;
+                Stopwatch sw_execution(true);
+                Stopwatch sw_round(true);
+                bool zcflag = true;
+                m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Zero();
+
+                uint64_t seg_sedge_csr, seg_nedges_csr;
+                index_t seg_snode, seg_enode;
+                std::pair<index_t, TValue> seg_res_idx;
+                std::vector<std::pair<index_t, TValue>> seg_res_rank;
+                index_t seg_idx_new;
+                Stopwatch sw_priority(true);
+                if (FLAGS_priority_a == 1)
+                {
+                    for (index_t seg_idx = 0; seg_idx < m_groute_context->segment_ct; seg_idx++)
+                    {
+                        seg_idx_new = m_groute_context->segment_id_ct[seg_idx];
+                        seg_res_idx.first = seg_idx;
+                        seg_res_idx.second = graph_datum.seg_res_num[seg_idx_new];
+                        seg_res_rank.push_back(seg_res_idx);
+                    }
+                    std::sort(seg_res_rank.begin(), seg_res_rank.end(), [](std::pair<index_t, TValue> v1, std::pair<index_t, TValue> v2)
+                              { return v1.second > v2.second; });
                 }
 
-                for(index_t seg_idx = 0; seg_idx < FLAGS_n_stream ; seg_idx++){
-                    if(m_graph_datum->seg_exc_list[seg_idx] != -1){
-                    index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
-                    seg_idx_new = seg_exc;
-                    uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
-                    stream_id = seg_exc % FLAGS_n_stream;
-                    seg_snode = m_groute_context->seg_snode[seg_idx_exp];                                    // start node
-                    seg_enode = m_groute_context->seg_enode[seg_idx_exp];                                    // end node
-                    seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp];                            // start edge
-                    seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp]; 
-                        
-                    m_csr_dev_graph_allocator->SwitchExp(stream_id);
-                    if(m_graph_datum->m_weighted == true){ 
-                        m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
-                    }
-                    zcflag = false;
-                    auto csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+                index_t priority_seg = m_groute_context->segment_ct;
 
-                    //LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",m_running_info.current_round,seg_idx_new,zcflag?"ZC":"Exp",seg_snode,seg_enode);
-                    RunSyncPushDDB(app_inst,seg_snode,seg_enode,seg_sedge_csr,seg_idx_exp,zcflag,
-                       csr_graph,
-                       graph_datum,
-                       m_engine_options,
-                       stream[stream_id]); 
-                    }
-                    else{
-                        continue;
-                    }            
-                }
-                for(index_t stream_idx = 0; stream_idx < FLAGS_n_stream ; stream_idx++){
-                    stream[stream_idx].Sync();
+                index_t seg_exc = 0;
+                for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                {
                     m_graph_datum->seg_exc_list[stream_idx] = -1;
                 }
+                sw_priority.stop();
+                m_running_info.time_overhead_sample += sw_priority.ms();
+
+                index_t stream_id;
+                for (index_t seg_idx = 0; seg_idx < priority_seg; seg_idx++)
+                {
+                    if (FLAGS_priority_a == 1)
+                    {
+                        seg_idx_new = seg_res_rank[seg_idx].first;
+                    }
+                    else
+                    {
+                        seg_idx_new = seg_idx;
+                    }
+                    uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
+                    seg_snode = m_groute_context->seg_snode[seg_idx_exp];         // start node
+                    seg_enode = m_groute_context->seg_enode[seg_idx_exp];         // end node
+                    seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp]; // start edge
+                    seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp];
+
+                    // printf("seg_idx_new:%d seg_snode:%d seg_enode:%d seg_sedge_csr:%lu seg_nedges_csr:%lu \n",seg_idx_new,seg_snode,seg_enode,seg_sedge_csr,seg_nedges_csr);
+                    stream_id = seg_idx_new % FLAGS_n_stream;
+                    const auto &csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+                    bool compact_flag = false; //
+                    bool isTD = false;
+                    if (algo_variant[seg_idx_new] == AlgoVariant::Exp_Filter)
+                    {
+                        // printf("exp\n");
+                        m_running_info.explicit_num++;
+                        seg_exc++;
+                        m_graph_datum->seg_exc_list[stream_id] = seg_idx_new;
+                        m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Explicit_Step(seg_nedges_csr, seg_sedge_csr, stream[stream_id], stream_id);
+                        m_csr_dev_graph_allocator->SwitchExp(stream_id);
+                        if (m_graph_datum->m_weighted == true)
+                        {
+                            m_graph_datum->m_csr_edge_weight_datum.AllocateDevMirror_edge_explicit_step(csr_graph_host, seg_nedges_csr, seg_sedge_csr, stream[stream_id], stream_id);
+                            m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
+                        }
+                        zcflag = false;
+                        // RunSyncPushDDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_exp, zcflag,
+                        //                csr_graph,
+                        //                graph_datum,
+                        //                m_engine_options,
+                        //                stream[stream_id]);
+                        RunSyncPushTDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_exp, zcflag,
+                                       csr_graph,
+                                       graph_datum,
+                                       m_engine_options,
+                                       stream[stream_id]);
+                        isTD = true;
+                    }
+                    else if (algo_variant[seg_idx_new] == AlgoVariant::Zero_Copy)
+                    {
+                        // printf("zero\n");
+                        m_running_info.zerocopy_num++;
+                        m_csr_dev_graph_allocator->SwitchZC();
+                        m_graph_datum->m_csr_edge_weight_datum.SwitchZC();
+                        zcflag = true;
+                        seg_idx_new = FLAGS_SEGMENT;
+                        RunSyncPushDDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_new, zcflag,
+                                       csr_graph,
+                                       graph_datum,
+                                       m_engine_options,
+                                       stream[stream_id]);
+                    }
+                    else
+                    {
+                        // printf("Compaction\n");
+                        compact_flag = true; ///
+                        m_running_info.compaction_num++;
+                        Compaction();
+                        m_csr_dev_graph_allocator->AllocateDevMirror_Edge_Compaction(graph_datum.subgraphedges, stream[stream_id]);
+                        m_csr_dev_graph_allocator->SwitchCom();
+                        if (m_graph_datum->m_weighted == true)
+                        {
+                            m_graph_datum->m_csr_edge_weight_datum.AllocateDevMirror_edge_compaction(csr_graph_host, graph_datum.subgraphedges, stream[stream_id]);
+                            m_graph_datum->m_csr_edge_weight_datum.SwitchCom();
+                        }
+                        zcflag = false;
+                        seg_idx_new = FLAGS_SEGMENT + 1;
+                        RunSyncPushDDB_COM(app_inst,
+                                           graph_datum.subgraphnodes,
+                                           seg_idx_new,
+                                           csr_graph,
+                                           graph_datum,
+                                           m_engine_options,
+                                           stream[stream_id]);
+                    }
+                    std::string policy = ""; //
+                    if (compact_flag)
+                        policy = "Comp";
+                    else if (zcflag)
+                        policy = "ZC";
+                    else
+                        policy = "Exp";
+
+                    std::string schedulingType = "";
+                    if(isTD)
+                        schedulingType = "TD";
+                    else
+                        schedulingType = "DD";
+
+                    LOG("PUSH %s RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",schedulingType.c_str(), m_running_info.current_round, seg_idx_new, policy.c_str(), seg_snode, seg_enode); //
+                }
+
+                for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                {
+                    stream[stream_idx].Sync();
+                }
+                sw_round.stop();
+                if (seg_exc >= FLAGS_n_stream && FLAGS_residence == 1)
+                {
+
+                    for (index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++)
+                    {
+                        if (m_graph_datum->seg_exc_list[seg_idx] != -1)
+                        {
+                            index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
+                            stream_id = seg_exc % FLAGS_n_stream;
+                            uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx];
+                            seg_snode = m_groute_context->seg_snode[seg_idx_exp]; // start node
+                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];
+                            RebuildArrayWorklist(app_inst,
+                                                 graph_datum,
+                                                 stream[stream_id], seg_snode, seg_enode - seg_snode, seg_idx_exp);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                    {
+                        stream[stream_idx].Sync();
+                    }
+
+                    for (index_t seg_idx = 0; seg_idx < FLAGS_n_stream; seg_idx++)
+                    {
+                        if (m_graph_datum->seg_exc_list[seg_idx] != -1)
+                        {
+                            index_t seg_exc = m_graph_datum->seg_exc_list[seg_idx];
+                            seg_idx_new = seg_exc;
+                            uint32_t seg_idx_exp = m_groute_context->segment_id_ct[seg_idx_new];
+                            stream_id = seg_exc % FLAGS_n_stream;
+                            seg_snode = m_groute_context->seg_snode[seg_idx_exp];         // start node
+                            seg_enode = m_groute_context->seg_enode[seg_idx_exp];         // end node
+                            seg_sedge_csr = m_groute_context->seg_sedge_csr[seg_idx_exp]; // start edge
+                            seg_nedges_csr = m_groute_context->seg_nedge_csr[seg_idx_exp];
+
+                            m_csr_dev_graph_allocator->SwitchExp(stream_id);
+                            if (m_graph_datum->m_weighted == true)
+                            {
+                                m_graph_datum->m_csr_edge_weight_datum.SwitchExp(stream_id);
+                            }
+                            zcflag = false;
+                            auto csr_graph = m_csr_dev_graph_allocator->DeviceObject();
+
+                            // LOG("PUSHDD RUN in round(%d)\t|batch(%d)\t|engine(%s)\t|range(%d,%d)\n",m_running_info.current_round,seg_idx_new,zcflag?"ZC":"Exp",seg_snode,seg_enode);
+                            RunSyncPushDDB(app_inst, seg_snode, seg_enode, seg_sedge_csr, seg_idx_exp, zcflag,
+                                           csr_graph,
+                                           graph_datum,
+                                           m_engine_options,
+                                           stream[stream_id]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    for (index_t stream_idx = 0; stream_idx < FLAGS_n_stream; stream_idx++)
+                    {
+                        stream[stream_idx].Sync();
+                        m_graph_datum->seg_exc_list[stream_idx] = -1;
+                    }
+                }
+
+                m_running_info.time_round = sw_round.ms();
+                PostComputationBW();
+                sw_execution.stop();
+
+                m_running_info.time_kernel += sw_execution.ms();
             }
-          
-          m_running_info.time_round = sw_round.ms();	
-          PostComputationBW();
-          sw_execution.stop();
-
-          m_running_info.time_kernel += sw_execution.ms();
-}
-
 
             void PostComputationBW() {
                 int dev_id = 0;

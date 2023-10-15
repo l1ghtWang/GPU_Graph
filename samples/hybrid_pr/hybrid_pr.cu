@@ -129,7 +129,9 @@ bool HybridPageRank()
     engine.SetOptions(engine_opt);
     engine.LoadGraph();
     engine.InitGraph(FLAGS_error);
+    // engine.Start();
     engine.Start();
+
     engine.PrintInfo();
     utils::JsonWriter &writer = utils::JsonWriter::getInst();
 

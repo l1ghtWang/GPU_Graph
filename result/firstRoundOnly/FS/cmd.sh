@@ -1,0 +1,2 @@
+~/HyTGraph/build/hybrid_pr -graphfile /home/share/graph_data/raw/friendster_snap/fs.el -format market_big -weight_num 1 > result_firstRound_FS_DD.txt
+~/HyTGraph/build/hybrid_pr_withTD -graphfile /home/share/graph_data/raw/friendster_snap/fs.el -format market_big -weight_num 1 > result_firstRound_FS_TD.txt

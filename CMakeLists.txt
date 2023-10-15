@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 add_definitions(-w)
 project(SEP-Graph)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ############## DEPENDENCIES ##############
 find_package(CUDA 9 REQUIRED)
 
@@ -22,7 +23,8 @@ set(EXTRA_LIBS gflags pthread ${CUDA_TOOLKIT_TARGET_DIR}/lib64/stubs/libcuda.so 
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Debug mode")
-    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-g;-lineinfo;-Xcompiler;-ggdb;-std=c++11 -O3)
+#     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-g;-lineinfo;-Xcompiler;-ggdb;-std=c++11 -O3)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-g;-G;-lineinfo;-Xcompiler;-ggdb;-DNDEBUG;-std=c++11 -O0)
 else ()
     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-O3;-DNDEBUG;-Xcompiler;-DNDEBUG;-std=c++11 -O3)
 endif ()
@@ -43,6 +45,19 @@ cuda_add_executable(hybrid_pr src/utils/parser.cpp src/utils/utils.cpp src/utils
        samples/hybrid_pr/main.cpp)
 target_link_libraries(hybrid_pr ${EXTRA_LIBS} pthread)
 
+cuda_add_executable(hybrid_pr_newImplementation src/utils/parser.cpp src/utils/utils.cpp src/utils/to_json.cpp #src/groute/graphs/csr_graph.cpp
+       samples/hybrid_pr_newImplementation/hybrid_pr.cu
+       samples/hybrid_pr_newImplementation/hybrid_pr_host.cpp
+       samples/hybrid_pr_newImplementation/main.cpp)
+target_link_libraries(hybrid_pr_newImplementation ${EXTRA_LIBS} pthread)
+
+cuda_add_executable(hybrid_pr_withTD src/utils/parser.cpp src/utils/utils.cpp src/utils/to_json.cpp #src/groute/graphs/csr_graph.cpp
+       samples/hybrid_pr_withTD/hybrid_pr.cu
+       samples/hybrid_pr_withTD/hybrid_pr_host.cpp
+       samples/hybrid_pr_withTD/main.cpp)
+target_link_libraries(hybrid_pr_withTD ${EXTRA_LIBS} pthread)
+
+
 cuda_add_executable(hybrid_bfs src/utils/parser.cpp src/utils/utils.cpp src/utils/to_json.cpp #src/groute/graphs/csr_graph.cpp
         samples/hybrid_bfs/hybrid_bfs.cu
         samples/hybrid_bfs/hybrid_bfs_host.cpp
@@ -55,6 +70,13 @@ cuda_add_executable(hybrid_sssp src/utils/parser.cpp src/utils/utils.cpp src/uti
        samples/hybrid_sssp/hybrid_sssp_host.cpp
         samples/hybrid_sssp/main.cpp)
 target_link_libraries(hybrid_sssp ${EXTRA_LIBS} pthread)
+
+cuda_add_executable(hybrid_sssp_plotFig6 src/utils/parser.cpp src/utils/utils.cpp src/utils/to_json.cpp #src/groute/graphs/csr_graph.cpp
+        samples/hybrid_sssp_plotFig6/hybrid_sssp.cu
+       samples/hybrid_sssp_plotFig6/hybrid_sssp_host.cpp
+        samples/hybrid_sssp_plotFig6/main.cpp)
+target_link_libraries(hybrid_sssp_plotFig6 ${EXTRA_LIBS} pthread)
+
 
 cuda_add_executable(hybrid_cc src/utils/parser.cpp src/utils/utils.cpp src/utils/to_json.cpp #src/groute/graphs/csr_graph.cpp
         samples/hybrid_cc/hybrid_cc.cu

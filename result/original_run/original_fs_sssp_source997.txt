@@ -1,0 +1,44 @@
+
+Testing single GPU SSSP
+--------------------
+
+
+Loading graph /home/share/graph_data/raw/friendster_snap/fs.el (market_big)
+
+----- Running Hybrid Graph Engine -----
+
+The graph has 124836180 vertices, and 1806067135 edges (average degree: 14.467498,max. degree: 3615)
+/home/yugwang/HyTGraph/include/framework/framework.cuh:132 HOST: Converting CSR to CSC...
+/home/yugwang/HyTGraph/include/framework/framework.cuh:198 HOST: Load graph time: 2530.344000 ms (excluded)
+Priority delta: 69
+/home/yugwang/HyTGraph/include/framework/framework.cuh:260 HOST: InitGraph: 22294.948000 ms (excluded)
+FLAGS_SEGMENT:20
+/home/yugwang/HyTGraph/include/framework/framework.cuh:318 HOST: --------------Overhead--------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:319 HOST: Rebuild worklist: 5.049000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:320 HOST: Priority sample: 0.006000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:321 HOST: hybrid Worlist: 0.351000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:322 HOST: Unique Worklist: 5.653000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:323 HOST: --------------Time statistics---------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:324 HOST: Kernel time: 3.311000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:325 HOST: Total time: 6.125000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:326 HOST: Total rounds: 1
+/home/yugwang/HyTGraph/include/framework/framework.cuh:327 HOST: Time/round: 6.125000
+/home/yugwang/HyTGraph/include/framework/framework.cuh:328 HOST: filter_num: 0
+/home/yugwang/HyTGraph/include/framework/framework.cuh:329 HOST: zerocopy_num: 1
+/home/yugwang/HyTGraph/include/framework/framework.cuh:330 HOST: compaction_num: 0
+/home/yugwang/HyTGraph/include/framework/framework.cuh:333 HOST: --------------Engine info-------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:340 HOST: Force Push Load balancing: FINE_GRAINED
+/home/yugwang/HyTGraph/include/framework/framework.cuh:345 HOST: Force Pull Load balancing: FINE_GRAINED
+/home/yugwang/HyTGraph/include/framework/framework.cuh:349 HOST: Priority type: NONE
+/home/yugwang/HyTGraph/include/framework/framework.cuh:358 HOST: Fused kernel: NO
+/home/yugwang/HyTGraph/include/framework/framework.cuh:359 HOST: Max iteration reached: NO
+/home/yugwang/HyTGraph/include/framework/framework.cuh:362 HOST: -------------Misc-------------------
+/home/yugwang/HyTGraph/include/framework/framework.cuh:364 HOST: Device: GeForce RTX 3090
+/home/yugwang/HyTGraph/include/framework/framework.cuh:365 HOST: Dataset: /home/share/graph_data/raw/friendster_snap/fs.el
+/home/yugwang/HyTGraph/include/framework/framework.cuh:367 HOST: Algo type: TRAVERSAL_SCHEME
+total errors: 0
+
+Context status:
+	Endpoint map (virtual endpoint, physical device):  (-1, -1) (0, 0)
+	Event pools (device, events):  (0, 0)
+Overall: Test passed

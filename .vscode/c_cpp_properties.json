@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+"/home/yugwang/HyTGraph/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "intelliSenseMode": "linux-clang-x64",
+            "compileCommands": "/home/yugwang/HyTGraph/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

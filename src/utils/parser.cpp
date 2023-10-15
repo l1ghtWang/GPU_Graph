@@ -325,6 +325,8 @@ graph_t *ReadGraphMarket_bigdata(char *filename,idx_t weight_num)
 
     uint32_t src,dst;
     while(getline( infile, line )){
+        if ((!line.empty() && line[0] == '#') || (!line.empty() && line[0] == '%'))
+            continue;
         ss.str("");
         ss.clear();
         ss << line;
