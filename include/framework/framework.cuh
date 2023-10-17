@@ -402,7 +402,6 @@ namespace sepgraph {
                         convergence = true;
                         LOG("Max iterations reached\n");
                   }
-                  break; ////debug
                 }
 
                 sw_total.stop();
@@ -454,7 +453,6 @@ namespace sepgraph {
                         convergence = true;
                         LOG("Max iterations reached\n");
                     }
-                    break; ////debug
                 }
 
                 sw_total.stop();

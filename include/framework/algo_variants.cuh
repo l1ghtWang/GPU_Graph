@@ -483,7 +483,12 @@ namespace sepgraph
                             EngineOptions &engine_options,
                             const groute::Stream &stream)
         {
-                // pr_td_kernel
+                dim3 grid_dims, block_dims;
+                KernelSizing(grid_dims, block_dims, seg_enode - seg_snode);
+                kernel::pr_td_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst, seg_snode, seg_enode, seg_sedge_csr, zcflag,
+                                                                                       csr_graph,
+                                                                                       graph_datum.GetValueDeviceObject(),
+                                                                                       graph_datum.GetBufferDeviceObject());
         }
 
         template <typename TAppInst,

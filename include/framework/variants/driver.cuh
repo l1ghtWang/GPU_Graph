@@ -1237,35 +1237,45 @@ namespace sepgraph {
 
 
         template <typename TAppInst,
-                  typename WorkSource,
                   typename CSRGraph,
                   template <typename> class GraphDatum,
                   typename TValue,
-                  typename TBuffer,
-                  typename TWeight>
+                  typename TBuffer>
         __global__ void pr_td_kernel(TAppInst app_inst,
                                      index_t seg_snode,
                                      index_t seg_enode,
                                      uint64_t seg_sedge_csr,
                                      bool zcflag,
-                                     WorkSource work_source,
                                      const CSRGraph csr_graph,
                                      GraphDatum<TValue> node_value_datum,
-                                     GraphDatum<TBuffer> node_buffer_datum,
-                                     GraphDatum<TWeight> edge_weight_datum,
-                                     BitmapDeviceObject out_active,
-                                     BitmapDeviceObject in_active)
+                                     GraphDatum<TBuffer> node_buffer_datum)
         {
             uint32_t tid = TID_1D;
+            const uint32_t nthreads = TOTAL_THREADS_1D;
             index_t work_size = seg_enode - seg_snode;
-            if (tid < work_size)
+            const uint32_t work_size_rup = round_up(work_size, blockDim.x) * blockDim.x;
+
+            for (uint32_t i = 0 + tid; i < work_size_rup; i += nthreads)
             {
-                index_t nodeID = seg_snode + tid;
-                uint64_t outDegree = csr_graph.end_edge(nodeID) - csr_graph.begin_edge(nodeID);
-                TBuffer buffer = atomicExch(node_buffer_datum.get_item_ptr(nodeID), 0.0);
-                if(buffer > 0.01)
+                if (tid < work_size)
                 {
-                    
+                    index_t nodeID = seg_snode + tid;
+                    uint64_t outDegree = csr_graph.end_edge(nodeID) - csr_graph.begin_edge(nodeID);
+                    TBuffer curDelta = atomicExch(node_buffer_datum.get_item_ptr(nodeID), 0.0);
+                    if (curDelta > 0.01)
+                    {
+                        *node_value_datum.get_item_ptr(nodeID) += curDelta;
+                        if(outDegree!=0)
+                        {
+                            float sourcePR = ((float)curDelta / outDegree) * 0.85;
+                            index_t startEdgeLocation = csr_graph.begin_edge(nodeID) - seg_sedge_csr;
+                            for(index_t edge = startEdgeLocation; edge < startEdgeLocation + outDegree; edge++)
+                            {
+                                index_t dst = csr_graph.edge_dest(edge);
+                                atomicAdd(node_buffer_datum.get_item_ptr(dst), sourcePR);
+                            }
+                        }
+                    }
                 }
             }
         }
