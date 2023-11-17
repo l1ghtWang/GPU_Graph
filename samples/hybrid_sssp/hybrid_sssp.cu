@@ -132,23 +132,34 @@ namespace hybrid_sssp
 
 bool HybridSSSP()
 {
+    Stopwatch sw_before_startFunction(true);////////
     assert(UINT32_MAX == UINT_MAX);
+    Stopwatch sw_engineInitialization(true); ////////
     typedef sepgraph::engine::Engine<distance_t, distance_t, distance_t, hybrid_sssp::SSSP, index_t> HybridEngine;
     HybridEngine engine(sepgraph::policy::AlgoType::TRAVERSAL_SCHEME);
+    sw_engineInitialization.stop();////////
+    printf("Time for engine initialization: %f ms\n", sw_engineInitialization.ms());////////
+    Stopwatch sw_engineLoadGraph(true); ////////
     engine.LoadGraph();
+    sw_engineLoadGraph.stop();////////
+    printf("Time for engine load graph: %f ms\n", sw_engineLoadGraph.ms());////////
 
     index_t source_node = min(max((index_t) 0, (index_t) FLAGS_source_node), engine.GetGraphDatum().nnodes - 1);
-
+    
+    Stopwatch sw_engineOption_init(true); ////////
     sepgraph::common::EngineOptions engine_opt;
+    sw_engineOption_init.stop();////////
+    printf("Time for engine option initialization: %f ms\n", sw_engineOption_init.ms());////////
 
-
+    Stopwatch sw_engine_prepare_CSRGraph(true); ////////
     groute::graphs::host::CSRGraph csr_graph = engine.CSRGraph();
     double weight_sum = 0;
     for (uint64_t edge = 0; edge < csr_graph.nedges; edge++)
     {
         weight_sum += csr_graph.edge_weights[edge];
     }
-
+    sw_engine_prepare_CSRGraph.stop();////////
+    printf("Time for engine prepare CSRGraph: %f ms\n", sw_engine_prepare_CSRGraph.ms());////////
     /**
      * We select a similar heuristic, Δ = cw/d,
         where d is the average degree in the graph, w is the average
@@ -160,6 +171,7 @@ bool HybridSSSP()
 
     printf("Priority delta: %u\n", init_prio);
 
+    Stopwatch sw_prepare_sparese_prio(true); ////////
     if (FLAGS_sparse)
     {
         engine_opt.SetFused();
@@ -174,9 +186,17 @@ bool HybridSSSP()
         engine_opt.SetTwoLevelBasedPriority(FLAGS_prio_delta);
     }
 
+    sw_prepare_sparese_prio.stop();////////
+    printf("Time for prepare sparese prio: %f ms\n", sw_prepare_sparese_prio.ms());////////
+    Stopwatch sw_setOptions(true); ////////
     engine.SetOptions(engine_opt);
+    sw_setOptions.stop();////////
+    printf("Time for set options: %f ms\n", sw_setOptions.ms());////////
     engine.InitGraph(source_node);
+    sw_before_startFunction.stop();////////
+    printf("Time for all the work before start(): %f ms\n", sw_before_startFunction.ms());////////
     engine.Start(init_prio);
+    Stopwatch sw_after_startFunction(true); ////////
     engine.PrintInfo();
 
     const auto &distances = engine.GatherValue();
@@ -201,5 +221,8 @@ bool HybridSSSP()
     {
         SSSPOutput(FLAGS_output.data(), distances);
     }
+
+    sw_after_startFunction.stop();////////
+    printf("Time for all the work after start(): %f ms\n", sw_after_startFunction.ms());////////
     return success;
 }

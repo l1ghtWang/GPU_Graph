@@ -1,10 +1,9 @@
-
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8)
 add_definitions(-w)
-cmake_policy(SET CMP0048 NEW)
-project(SEP-Graph VERSION 1.0.0) # Example version
+project(SEP-Graph)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ############## DEPENDENCIES ##############
-find_package(CUDA 11 REQUIRED)
+find_package(CUDA 9 REQUIRED)
 
 message("-- CUDA Version: ${CUDA_VERSION_STRING}")
 
@@ -25,15 +24,15 @@ set(EXTRA_LIBS gflags pthread ${CUDA_TOOLKIT_TARGET_DIR}/lib64/stubs/libcuda.so 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Debug mode")
 #     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-g;-lineinfo;-Xcompiler;-ggdb;-std=c++11 -O3)
-        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_86,code=sm_86;-g;-G;-lineinfo;-Xcompiler;-ggdb;-DNDEBUG;-std=c++14 -O0)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-g;-G;-lineinfo;-Xcompiler;-ggdb;-DNDEBUG;-std=c++11 -O0)
 else ()
-    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_86,code=sm_86;-O3;-DNDEBUG;-Xcompiler;-DNDEBUG;-std=c++14 -O3)
+    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode;arch=compute_35,code=sm_35;-gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_52,code=sm_52;-gencode;arch=compute_52,code=compute_52;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-O3;-DNDEBUG;-Xcompiler;-DNDEBUG;-std=c++11 -O3)
 endif ()
 
 set(CUDA_PROPAGATE_HOST_FLAGS OFF)
 
 # Addresses a bug where code is not compiled as C++11 in non-CUDA code and older g++ versions
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -DNDEBUG")
 
 message("-- Host Compiler: ${CUDA_HOST_COMPILER}")
 

@@ -177,8 +177,10 @@ namespace groute
 
                     this->subgraph_activenode = (uint32_t *) calloc((nnodes), sizeof(uint32_t));
                     this->subgraph_rowstart = (uint32_t *) calloc((nnodes + 1), sizeof(uint32_t));
-                    this->subgraph_edgedst = (uint32_t *) calloc((nedges / 4), sizeof(uint32_t));
-                    this->subgraph_edgeweight = (uint32_t *) calloc((nedges / 4), sizeof(uint32_t));
+                    // this->subgraph_edgedst = (uint32_t *) calloc((nedges / 4), sizeof(uint32_t));//original HytGraph code
+                    // this->subgraph_edgeweight = (uint32_t *)calloc((nedges / 4), sizeof(uint32_t)); // original HytGraph code
+                    this->subgraph_edgedst = (uint32_t *)calloc((nedges), sizeof(uint32_t));    // modified by yugwang
+                    this->subgraph_edgeweight = (uint32_t *)calloc((nedges), sizeof(uint32_t)); // modified by yugwang
                 }
 
 
@@ -287,6 +289,93 @@ namespace groute
                         cudaMemcpy(p_out_degree, out_degree, nnodes * sizeof(index_t),
                                    cudaMemcpyHostToDevice));
                 }
+
+                // void PrintHistogram(uint32_t *&p_in_degree,
+                //                     uint32_t *&p_out_degree)
+                // {
+                //     uint32_t *in_degree = new uint32_t[nnodes];
+                //     uint32_t *out_degree = new uint32_t[nnodes];
+
+                //     for (index_t node = 0; node < nnodes; node++)
+                //     {
+                //         index_t begin_edge = this->begin_edge(node),
+                //                 end_edge = this->end_edge(node);
+
+                //         out_degree[node] = end_edge - begin_edge;
+
+                //         for (index_t edge = begin_edge; edge < end_edge; edge++)
+                //         {
+                //             index_t dest = this->edge_dest(edge);
+                //             in_degree[dest]++;
+                //         }
+                //     }
+
+                //     GROUTE_CUDA_CHECK(cudaMalloc(&p_in_degree, nnodes * sizeof(index_t)));
+                //     GROUTE_CUDA_CHECK(
+                //         cudaMemcpy(p_in_degree, in_degree, nnodes * sizeof(index_t),
+                //                    cudaMemcpyHostToDevice));
+
+                //     GROUTE_CUDA_CHECK(cudaMalloc(&p_out_degree, nnodes * sizeof(index_t)));
+                //     GROUTE_CUDA_CHECK(
+                //         cudaMemcpy(p_out_degree, out_degree, nnodes * sizeof(index_t),
+                //                    cudaMemcpyHostToDevice));
+                // }
+
+                // void PrintHistogram(uint32_t *&p_in_degree,
+                //                     uint32_t *&p_out_degree)
+                // {
+                //     uint32_t *in_degree = new uint32_t[nnodes]; //original HytGraph code
+                //     // uint32_t *out_degree = new uint32_t[nnodes];//original HytGraph code
+
+                //     // uint32_t *in_degree = (uint32_t *) calloc((nnodes), sizeof(uint32_t)); //modified by yugwang
+                //     uint32_t *out_degree = (uint32_t *) calloc((nnodes), sizeof(uint32_t));//modified by yugwang
+
+                //     for (index_t node = 0; node < nnodes; node++)
+                //     {
+                //         index_t begin_edge = this->begin_edge(node),
+                //                 end_edge = this->end_edge(node);
+
+                //         out_degree[node] = end_edge - begin_edge;
+
+                //         for (index_t edge = begin_edge; edge < end_edge; edge++)
+                //         {
+                //             index_t dest = this->edge_dest(edge);
+                //             in_degree[dest]++;
+                //         }
+                //     }
+
+                //     // CHECK_CUDA_ERROR(cudaFree(p_in_degree));
+                //     // CHECK_CUDA_ERROR(cudaMalloc(&p_in_degree, nnodes * sizeof(uint32_t)));
+                //     uint32_t *temp_ptr;
+                //     cudaDeviceSynchronize();
+                //     CHECK_LAST_CUDA_ERROR();
+                //     CHECK_CUDA_ERROR(cudaMalloc(&temp_ptr, nnodes * sizeof(uint32_t)));
+                //     CHECK_CUDA_ERROR(cudaMemcpy(in_degree, temp_ptr, nnodes * sizeof(uint32_t),
+                //                                 cudaMemcpyDeviceToHost));
+                //     CHECK_CUDA_ERROR(cudaMemcpy(temp_ptr, in_degree, nnodes * sizeof(uint32_t),
+                //                                 cudaMemcpyHostToDevice));
+                //     p_in_degree = temp_ptr;
+                //     // CHECK_CUDA_ERROR(cudaMalloc((void **)&p_in_degree, nnodes * sizeof(uint32_t)));
+                //     printf("size of p_in_degree: %d\n", nnodes * sizeof(uint32_t)); // debug info//////////////
+                //     printf("ptr of p_in_degree: %p\n", p_in_degree);//debug info//////////////
+                //     printf("ptr of in_degree: %p\n", in_degree);//debug info//////////////
+                //     // CHECK_CUDA_ERROR(
+                //     //     cudaMemcpy(p_in_degree, in_degree, nnodes * sizeof(uint32_t),
+                //     //                cudaMemcpyHostToDevice));
+                //     // CHECK_CUDA_ERROR(
+                //     //     cudaMemcpy(p_in_degree, in_degree, nnodes * sizeof(uint32_t),
+                //     //                cudaMemcpyHostToDevice));
+
+                //     // CHECK_CUDA_ERROR(cudaFree(p_out_degree));
+                //     CHECK_CUDA_ERROR(cudaMalloc(&p_out_degree, nnodes * sizeof(uint32_t)));
+                //     CHECK_CUDA_ERROR(
+                //         cudaMemcpy(p_out_degree, out_degree, nnodes * sizeof(uint32_t),
+                //                    cudaMemcpyHostToDevice));
+
+                //     // free(in_degree);
+                //     delete[] in_degree;
+                //     free(out_degree);
+                // }
             };
 
             /*
@@ -1054,9 +1143,12 @@ namespace groute
     		            }
                         GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.subgraph_activenode, (nnodes) * sizeof(uint32_t)));
                         GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.subgraph_rowstart, (nnodes + 1) * sizeof(uint32_t)));
-                        GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.edge_dst_com, nedges/4 * sizeof(uint32_t)));
-                        GROUTE_CUDA_CHECK(cudaHostRegister((void *)m_origin_graph.subgraph_edgedst, nedges/4 * sizeof(index_t), cudaHostRegisterMapped));
-		            }
+                        // GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.edge_dst_com, nedges/4 * sizeof(uint32_t))); //original HytGraph code
+                        // GROUTE_CUDA_CHECK(cudaHostRegister((void *)m_origin_graph.subgraph_edgedst, nedges / 4 * sizeof(index_t), cudaHostRegisterMapped));//original HytGraph code
+                        GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.edge_dst_com, nedges * sizeof(uint32_t))); // modified by yugwang
+                        // printf("size of m_dev_mirror.edge_dst_com: %d\n", nedges * sizeof(uint32_t));//debug info//////////////
+                        GROUTE_CUDA_CHECK(cudaHostRegister((void *)m_origin_graph.subgraph_edgedst, nedges * sizeof(index_t), cudaHostRegisterMapped)); // modified by yugwang
+                    }
                     GROUTE_CUDA_CHECK(cudaHostRegister((void *)m_origin_graph.edge_dst, sizeof(index_t) * nedges, cudaHostRegisterMapped));
 
                     GROUTE_CUDA_CHECK(cudaMalloc(&m_dev_mirror.row_start, (nnodes + 1) * sizeof(uint64_t))); // malloc and copy +1 for the row_start's extra cell
@@ -1080,6 +1172,7 @@ namespace groute
 
                 void AllocateDevMirror_edge_compaction(uint64_t seg_nedges, const groute::Stream &stream)
                 {
+                    printf(" cudaMemcpyAsync to m_dev_mirror.edge_dst_com, size: %d\n", seg_nedges * sizeof(index_t));//debug info//////////////
                       GROUTE_CUDA_CHECK(
                             cudaMemcpyAsync(m_dev_mirror.edge_dst_com, m_origin_graph.subgraph_edgedst,
                                    seg_nedges * sizeof(index_t),
@@ -1492,7 +1585,7 @@ if(m_on_pinned_memory){
                 {
                     m_host_data.resize(m_dev_datum.size);
 
-                    GROUTE_CUDA_CHECK(cudaMemcpy(
+                    CHECK_CUDA_ERROR(cudaMemcpy(
                         &m_host_data[0], m_dev_datum.data_ptr,
                         m_dev_datum.size * sizeof(T), cudaMemcpyDeviceToHost));
                 }

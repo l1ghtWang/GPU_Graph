@@ -469,15 +469,15 @@ namespace sepgraph
             //stream.Sync();
         }
 
-        template<typename TAppInst,
-                typename TCSRGraph,
-                typename TGraphDatum>
-        void Run_newImplementation(TAppInst &app_inst,
-                index_t seg_snode,
-                index_t seg_enode,
-                uint64_t seg_sedge_csr,
-		        index_t seg_idx,
-                bool zcflag,
+        template <typename TAppInst,
+                  typename TCSRGraph,
+                  typename TGraphDatum>
+        void Run_SyncPushTD(TAppInst &app_inst,
+                            index_t seg_snode,
+                            index_t seg_enode,
+                            uint64_t seg_sedge_csr,
+                            index_t seg_idx,
+                            bool zcflag,
                             const TCSRGraph &csr_graph,
                             TGraphDatum &graph_datum,
                             EngineOptions &engine_options,
@@ -485,10 +485,110 @@ namespace sepgraph
         {
                 dim3 grid_dims, block_dims;
                 KernelSizing(grid_dims, block_dims, seg_enode - seg_snode);
-                kernel::pr_td_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst, seg_snode, seg_enode, seg_sedge_csr, zcflag,
-                                                                                       csr_graph,
-                                                                                       graph_datum.GetValueDeviceObject(),
-                                                                                       graph_datum.GetBufferDeviceObject());
+                kernel::pr_sync_push_td_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst, seg_snode, seg_enode, seg_sedge_csr, zcflag,
+                                                                                                 csr_graph,
+                                                                                                 graph_datum.GetValueDeviceObject(),
+                                                                                                 graph_datum.GetBufferDeviceObject());
+        }
+
+        template <typename TAppInst,
+                  typename TCSRGraph,
+                  typename TGraphDatum>
+        void Run_SyncPushDD(TAppInst &app_inst,
+                                   index_t seg_snode,
+                                   index_t seg_enode,
+                                   uint64_t seg_sedge_csr,
+                                   index_t seg_idx,
+                                   bool zcflag,
+                                   const TCSRGraph &csr_graph,
+                                   TGraphDatum &graph_datum,
+                                   EngineOptions &engine_options,
+                                   const groute::Stream &stream)
+        {
+                dim3 grid_dims, block_dims;
+                uint32_t work_size = graph_datum.m_wl_array_in_seg[seg_idx].GetCount(stream);
+                KernelSizing(grid_dims, block_dims, seg_enode - seg_snode);
+                kernel::pr_sync_push_dd_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>
+                        (app_inst, seg_snode, seg_enode, seg_sedge_csr,
+                        groute::dev::WorkSourceArray<index_t>
+                        (graph_datum.m_wl_array_in_seg[seg_idx].GetDeviceDataPtr(),work_size),
+                        csr_graph,
+                        graph_datum.GetValueDeviceObject(),
+                        graph_datum.GetBufferDeviceObject());
+        }
+
+        template <typename TAppInst,
+                  typename TCSRGraph,
+                  typename TGraphDatum>
+        void Run_SyncPushDD_compaction(TAppInst &app_inst,
+                                       index_t active_count,
+                                       index_t seg_idx,
+                                       const TCSRGraph &csr_graph,
+                                       TGraphDatum &graph_datum,
+                                       EngineOptions &engine_options,
+                                       const groute::Stream &stream)
+        {
+                dim3 grid_dims, block_dims;
+                KernelSizing(grid_dims, block_dims, active_count);
+                uint32_t work_size = graph_datum.m_wl_array_in_seg[seg_idx].GetCount(stream);
+                kernel::pr_sync_push_dd_compaction_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst,
+                                                                                                     groute::dev::WorkSourceArray<index_t>(
+                                                                                                         graph_datum.m_wl_array_in_seg[seg_idx].GetDeviceDataPtr(),
+                                                                                                         work_size),
+                                                                                                     csr_graph,
+                                                                                                     graph_datum.GetValueDeviceObject(),
+                                                                                                     graph_datum.GetBufferDeviceObject(),
+                                                                                                     graph_datum.GetEdgeWeightDeviceObject(),
+                                                                                                     graph_datum.m_wl_bitmap_out_high.DeviceObject(),
+                                                                                                     graph_datum.m_wl_bitmap_in.DeviceObject());
+        }
+
+        template <typename TAppInst,
+                  typename TCSRGraph,
+                  typename TGraphDatum>
+        void Run_SyncPushDD_zeroCopy(TAppInst &app_inst,
+                            index_t seg_snode,
+                            index_t seg_enode,
+                            uint64_t seg_sedge_csr,
+                            index_t seg_idx,
+                            bool zcflag,
+                            const TCSRGraph &csr_graph,
+                            TGraphDatum &graph_datum,
+                            EngineOptions &engine_options,
+                            const groute::Stream &stream)
+        {
+                dim3 grid_dims, block_dims;
+                uint32_t work_size = graph_datum.m_wl_array_in_seg[seg_idx].GetCount(stream);
+                KernelSizing(grid_dims, block_dims, work_size);
+                kernel::pr_sync_push_dd_zeroCopy_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst, seg_snode, seg_enode, seg_sedge_csr, 
+                                                                                                 groute::dev::WorkSourceArray<index_t>(graph_datum.m_wl_array_in_seg[seg_idx].GetDeviceDataPtr(), work_size),
+                                                                                                 csr_graph,
+                                                                                                 graph_datum.GetValueDeviceObject(),
+                                                                                                 graph_datum.GetBufferDeviceObject());
+        }
+
+        template <typename TAppInst,
+                  typename TCSRGraph,
+                  typename TGraphDatum>
+        void Run_SyncPushTD_zeroCopy(TAppInst &app_inst,
+                            index_t seg_snode,
+                            index_t seg_enode,
+                            uint64_t seg_sedge_csr,
+                            index_t seg_idx,
+                            bool zcflag,
+                            const TCSRGraph &csr_graph,
+                            TGraphDatum &graph_datum,
+                            EngineOptions &engine_options,
+                            const groute::Stream &stream)
+        {
+                dim3 grid_dims, block_dims;
+                uint32_t work_size = graph_datum.m_wl_array_in_seg[seg_idx].GetCount(stream);
+                KernelSizing(grid_dims, block_dims, work_size);
+                kernel::pr_sync_push_dd_zeroCopy_kernel<<<grid_dims, block_dims, 0, stream.cuda_stream>>>(app_inst, seg_snode, seg_enode, seg_sedge_csr, 
+                                                                                                 groute::dev::WorkSourceArray<index_t>(graph_datum.m_wl_array_in_seg[seg_idx].GetDeviceDataPtr(), work_size),
+                                                                                                 csr_graph,
+                                                                                                 graph_datum.GetValueDeviceObject(),
+                                                                                                 graph_datum.GetBufferDeviceObject());
         }
 
         template <typename TAppInst,
